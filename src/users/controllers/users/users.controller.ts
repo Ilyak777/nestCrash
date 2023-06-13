@@ -29,7 +29,7 @@ export class UsersController {
     // @Body из @nestjs/common с использованием DTO для ускоренной обработки данных
     console.log(userData);
     return {};
-    //fsdfdf
+    
   }
 
   @Get(':id')
