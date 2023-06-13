@@ -11,16 +11,21 @@ import {
   ParseBoolPipe,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
+import { AuthGuard } from 'src/users/guards/auth/auth.guard';
 import { ValidateCreateUserPipe } from 'src/users/pipes/validate-create-user/validate-create-user.pipe';
 import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
+
+//@UseGuards() подключение гварда ко всей сетке роутов
 export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Get()
+  @UseGuards(AuthGuard)
   getServiceUsers() {
     //вся логика(обращение к бд и тд) должна быть заключена в сервисы. В данном случае для отправки ответа
     //используется обращение к UsersService
@@ -37,7 +42,8 @@ export class UsersController {
   // Все POST запросы с валидацией из пакета class-validator
   @Post('create')
   @UsePipes(new ValidationPipe()) //подключаю валидацию, которую описал в DTO
-  createUser(@Body(ValidateCreateUserPipe) userData: CreateUserDto) { // pipe инфа внутри
+  createUser(@Body(ValidateCreateUserPipe) userData: CreateUserDto) {
+    // pipe инфа внутри
     // POST запрос, при котором летят данные нужно обрабатывать декоратором
     // @Body из @nestjs/common с использованием DTO для ускоренной обработки данных
     console.log(typeof userData.age);
