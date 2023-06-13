@@ -11,7 +11,6 @@ export class ExampleMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     console.log('Example Middleware');
     const { authorization } = req.headers;
-    console.log(authorization);
 
     if (!authorization) {
       throw new HttpException('non authorised', HttpStatus.UNAUTHORIZED);

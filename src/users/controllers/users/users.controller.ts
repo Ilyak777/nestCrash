@@ -13,6 +13,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
+import { ValidateCreateUserPipe } from 'src/users/pipes/validate-create-user/validate-create-user.pipe';
 import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
@@ -36,10 +37,10 @@ export class UsersController {
   // Все POST запросы с валидацией из пакета class-validator
   @Post('create')
   @UsePipes(new ValidationPipe()) //подключаю валидацию, которую описал в DTO
-  createUser(@Body() userData: CreateUserDto) {
+  createUser(@Body(ValidateCreateUserPipe) userData: CreateUserDto) { // pipe инфа внутри
     // POST запрос, при котором летят данные нужно обрабатывать декоратором
     // @Body из @nestjs/common с использованием DTO для ускоренной обработки данных
-    console.log(userData);
+    console.log(typeof userData.age);
     this.userService.createUser(userData);
     return {};
   }
